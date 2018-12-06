@@ -46,11 +46,41 @@ namespace WpfApp7
 
                 string path = projpath.Remove(projpath.Count() - name.Count() - 8);
 
-                PrgData Prog = new PrgData(name, path + fnode.Value, path + lnode.Value);
+                
+
+                string Fpath = path + fnode.Value;
+
+                string Lpath = path + lnode.Value;
+
+                int Select = 0;
+                try
+                {
+                    var lastModifiedF = System.IO.File.GetLastWriteTime(Fpath);
+                }
+                catch (Exception)
+                {
+                    Select = 2;
+                }
+                try
+                {
+                    var lastModifiedL = System.IO.File.GetLastWriteTime(Lpath);
+                }
+                catch (Exception)
+                {
+                    Select = 1;
+                }
+
+                
+
+                PrgData Prog = new PrgData(name, Fpath, Lpath);
 
                 AppList.Add(Prog);
 
             }
+
+        }
+        private void PrintApps()
+        {
 
         }
     }
