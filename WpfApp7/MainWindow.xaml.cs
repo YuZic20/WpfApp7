@@ -35,20 +35,23 @@ namespace WpfApp7
             List<string> text = new List<string>(); 
             text = Directory.GetFiles(SPath, "*.csproj", SearchOption.AllDirectories).ToList();
 
-            XDocument doc = new XDocument();
             
             foreach (string projpath in text)
             {
-                //doc.Load(projpath);
-                //XmlNode node = doc.DocumentElement.SelectSingleNode("/Project/PropertyGroup/OutputPath");
-                string a = "";
-            }/*
-            XDocument doc = XDocument.Load("XMLFile1.xml");
-            var authors = doc.Descendants("Author");
-            foreach (var author in authors)
-            {
-                Console.WriteLine(author.Value);
-            }*/
+                XDocument docNode = XDocument.Load(projpath);
+                var fnode = docNode.Descendants().First(p => p.Name.LocalName == "OutputPath");
+                var lnode = docNode.Descendants().Last(p => p.Name.LocalName == "OutputPath");
+
+                string name = System.IO.Path.GetFileName(projpath).Remove(System.IO.Path.GetFileName(projpath).Count()-7);
+
+                string path = projpath.Remove(projpath.Count() - name.Count() - 8);
+
+                PrgData Prog = new PrgData(name, path + fnode.Value, path + lnode.Value);
+
+                AppList.Add(Prog);
+
+            }
+
         }
     }
 }
