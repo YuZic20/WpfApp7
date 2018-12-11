@@ -9,14 +9,12 @@ namespace WpfApp7
     class PrgData
     {
         public string Name = "";
-        public string PathF = "";
-        public string PathL = "";
+        public string Path = "";
 
-        public PrgData(string IName, string IPathF, string IPathL)
+        public PrgData(string IName, string IPath)
         {
             Name = IName;
-            PathF = IPathF;
-            PathL = IPathL;
+            Path = IPath;
 
         }
     }

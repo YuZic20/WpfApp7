@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,7 @@ using System.Windows.Shapes;
 using System.Xml;
 using System.Xml.Linq;
 
+
 namespace WpfApp7
 {
     /// <summary>
@@ -23,65 +25,46 @@ namespace WpfApp7
     /// </summary>
     public partial class MainWindow : Window
     {
-        string SPath = @"D:\Hynek";
+        string SPath = @"C:\";//@"D:\Hynek";
         List<PrgData> AppList = new List<PrgData>();
         public MainWindow()
         {
             InitializeComponent();
-            GetExe();
+            AppList = LoadList.GetExe(SPath);
+            PrintApps();
         }
-        private void GetExe()
+        
+        private void PrintApps()
         {
-            List<string> text = new List<string>(); 
-            text = Directory.GetFiles(SPath, "*.csproj", SearchOption.AllDirectories).ToList();
-
             
-            foreach (string projpath in text)
+            for (int i = 0; i < AppList.Count(); i++)
             {
-                XDocument docNode = XDocument.Load(projpath);
-                var fnode = docNode.Descendants().First(p => p.Name.LocalName == "OutputPath");
-                var lnode = docNode.Descendants().Last(p => p.Name.LocalName == "OutputPath");
+                Button newBtn = new Button();
 
-                string name = System.IO.Path.GetFileName(projpath).Remove(System.IO.Path.GetFileName(projpath).Count()-7);
-
-                string path = projpath.Remove(projpath.Count() - name.Count() - 8);
-
+                newBtn.Content = AppList[i].Name;
+                newBtn.Name = AppList[i].Name;
+                newBtn.Height = 20;
+                newBtn.Click += new RoutedEventHandler(Apk_Click);
+                newBtn.Tag = AppList[i].Path;
                 
 
-                string Fpath = path + fnode.Value;
 
-                string Lpath = path + lnode.Value;
-
-                int Select = 0;
-                try
-                {
-                    var lastModifiedF = System.IO.File.GetLastWriteTime(Fpath);
-                }
-                catch (Exception)
-                {
-                    Select = 2;
-                }
-                try
-                {
-                    var lastModifiedL = System.IO.File.GetLastWriteTime(Lpath);
-                }
-                catch (Exception)
-                {
-                    Select = 1;
-                }
-
-                
-
-                PrgData Prog = new PrgData(name, Fpath, Lpath);
-
-                AppList.Add(Prog);
-
+                sp.Children.Add(newBtn);
+                int a = 5;
             }
 
         }
-        private void PrintApps()
-        {
 
+
+        private void Apk_Click(object sender, RoutedEventArgs e)
+        {
+            Button bt = (Button)sender;
+
+
+
+            string path = bt.Tag.ToString();
+            
+            Process.Start(path);
         }
     }
 }
