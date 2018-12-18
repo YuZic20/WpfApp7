@@ -25,7 +25,10 @@ namespace WpfApp7
     /// </summary>
     public partial class MainWindow : Window
     {
-        string SPath = @"C:\";//@"D:\Hynek";
+        string SPath = @"C:\Users\" + Environment.UserName + @"\source\repos";
+
+
+        
         List<PrgData> AppList = new List<PrgData>();
         public MainWindow()
         {

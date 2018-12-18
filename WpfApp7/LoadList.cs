@@ -17,35 +17,43 @@ namespace WpfApp7
             List<string> exes = new List<string>();
 
 
-            text = Directory.GetFiles(SPath, "*.csproj", SearchOption.AllDirectories).ToList(); //https://stackoverflow.com/questions/172544/ignore-folders-files-when-directory-getfiles-is-denied-access
-
+            text = ApplyAllFiles(SPath); //Directory.GetFiles(SPath, "*.csproj", SearchOption.AllDirectories).ToList();
 
             foreach (string projpath in text)
             {
-                XDocument docNode = XDocument.Load(projpath);
-                var fnode = docNode.Descendants().First(p => p.Name.LocalName == "OutputPath");
-                var lnode = docNode.Descendants().Last(p => p.Name.LocalName == "OutputPath");
-
-                string name = System.IO.Path.GetFileNameWithoutExtension(projpath);//.Remove(System.IO.Path.GetFileName(projpath).Count() - 7);
-
-                string path = projpath.Remove(projpath.Count() - name.Count() - 7);
-
-                
-
-                string Fpath = path + fnode.Value;
-
-                string Lpath = path + lnode.Value;
-
-                exes = GetListOfExes(Fpath, Lpath);
-                string LatestExePath;
-                if (exes.Count() != 0)
+                try
                 {
-                    LatestExePath = GetRecentExe(exes);
-                    PrgData Prog = new PrgData(name, LatestExePath);
+                    XDocument docNode = XDocument.Load(projpath);
+                    var fnode = docNode.Descendants().First(p => p.Name.LocalName == "OutputPath");
+                    var lnode = docNode.Descendants().Last(p => p.Name.LocalName == "OutputPath");
 
-                    AppList.Add(Prog);
+                    string name = System.IO.Path.GetFileNameWithoutExtension(projpath);//.Remove(System.IO.Path.GetFileName(projpath).Count() - 7);
 
+                    string path = projpath.Remove(projpath.Count() - name.Count() - 7);
+
+
+
+                    string Fpath = path + fnode.Value;
+
+                    string Lpath = path + lnode.Value;
+
+                    exes = GetListOfExes(Fpath, Lpath);
+                    string LatestExePath;
+                    if (exes.Count() != 0)
+                    {
+                        LatestExePath = GetRecentExe(exes);
+                        PrgData Prog = new PrgData(name, LatestExePath);
+
+                        AppList.Add(Prog);
+
+                    }
                 }
+                catch
+                {
+                    // error nodu
+                }
+
+               
 
                 
 
@@ -130,6 +138,37 @@ namespace WpfApp7
                 }
             }
             return path;
+        }
+
+        static List<string> ApplyAllFiles(string folder)
+        {
+            List<string> paths = new List<string>();
+            List<string> addPaths = new List<string>();
+            foreach (string file in Directory.GetFiles(folder, "*.csproj", SearchOption.TopDirectoryOnly))
+            {
+                try
+                {
+                    paths.Add(file);
+                }
+                catch
+                {
+                    // error na souboru
+                }
+                
+            }
+            foreach (string subDir in Directory.GetDirectories(folder))
+            {
+                try
+                {
+                    addPaths = ApplyAllFiles(subDir);
+                    paths.AddRange(addPaths);
+                }
+                catch
+                {
+                    // error na ceste
+                }
+            }
+            return paths;
         }
     }
 }
