@@ -10,11 +10,13 @@ namespace WpfApp7
     {
         public string Name { get; set; }
         public string Path { get; set; }
+        public string DirectoryPath { get; set; }
 
-        public PrgData(string IName, string IPath)
+        public PrgData(string IName, string IPath, string IDirectoryPath)
         {
             Name = IName;
             Path = IPath;
+            DirectoryPath = IDirectoryPath;
 
         }
     }

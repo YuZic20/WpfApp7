@@ -7,6 +7,16 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <StackPanel Orientation="Horizontal" Height="50" VerticalAlignment="Top" HorizontalAlignment="Center" >
+            <Button Height="50" Width="100" Margin="5 0 5 0" Name="ActionB1" Content="Smazat" Click="ButtonActionDelete_Click" Background="AliceBlue"></Button>
+            <Button Height="50" Width="100" Margin="5 0 5 0" Name="ActionB2" Content="Spustit" Click="ButtonActionPlay_Click" Background="AliceBlue"></Button>
+            <Button Height="50" Width="100" Margin="5 0 5 0" Name="ActionB3" Content="Přesunout" Click="ButtonActionCopy_Click" Background="AliceBlue"></Button>
+        </StackPanel>
+        
+        
+        <TextBox Height="20" Margin="20 60 40 0" VerticalAlignment="Top" Name="PathInput" Text="C:\Users\W0olf\source\" ></TextBox>
+        <Button Height="20" Width="20" Margin="20 60 20 0" VerticalAlignment="Top" HorizontalAlignment="Right" Click="ButtonUpdate_Click" Content="S" ></Button>
+        <TextBox Height="20" Margin="20 85 20 0" VerticalAlignment="Top" Name="CopyPathInput" Text="C:\Users\W0olf\source\Copy_Destination"></TextBox>
         <StackPanel Name="sp" Height="200" Width="500">
 
         </StackPanel>

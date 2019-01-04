@@ -31,6 +31,9 @@ namespace WpfApp7
 
                     string path = projpath.Remove(projpath.Count() - name.Count() - 7);
 
+                    string DirectoryPath = System.IO.Directory.GetParent(path).ToString();
+
+                    DirectoryPath = System.IO.Directory.GetParent(DirectoryPath).ToString();
 
 
                     string Fpath = path + fnode.Value;
@@ -42,7 +45,7 @@ namespace WpfApp7
                     if (exes.Count() != 0)
                     {
                         LatestExePath = GetRecentExe(exes);
-                        PrgData Prog = new PrgData(name, LatestExePath);
+                        PrgData Prog = new PrgData(name, LatestExePath, DirectoryPath);
 
                         AppList.Add(Prog);
 
