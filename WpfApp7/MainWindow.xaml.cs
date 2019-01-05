@@ -30,6 +30,7 @@ namespace WpfApp7
         //string SPath = @"C:\Users\" + Environment.UserName + @"\source\repos";
         string SPath;
         int action = 2;
+        int LastApkClickedToDelete;
 
 
 
@@ -48,14 +49,29 @@ namespace WpfApp7
 
         private void UpdateApps()
         {
-            string SPath = PathInput.Text;
+            try
+            {
+                AppList = new List<PrgData>();
+                string SPath = PathInput.Text;
+                AppList = LoadList.GetExe(SPath);
+                PrintApps();
+            }
+            catch(Exception)
+            {
+                PathInput.Text = PathInput.Text + " <-- Not Valid Path -->";
+            }
+            
+        }
+        private void UpdateAppsWithPrewPath()
+        {
+            AppList = new List<PrgData>();
             AppList = LoadList.GetExe(SPath);
             PrintApps();
         }
-        
+
         private void PrintApps()
         {
-            
+            sp.Children.Clear();
             for (int i = 0; i < AppList.Count(); i++)
             {
                 Button newBtn = new Button();
@@ -84,21 +100,51 @@ namespace WpfApp7
             PrgData ButtonData = AppList[Id];
             if (action == 1)
             {
-                
+                LastApkClickedToDelete = Id;
+                PopUp.Visibility = Visibility.Visible;
+                //delete
             }else if(action == 2)
             {
                 StartApk(ButtonData);
             }
             else if(action == 3)
             {
-
+                CopyApk(ButtonData);
             }
             
         }
-
+        private void CopyApk(PrgData sender)
+        {
+            try
+            {
+                System.IO.Directory.CreateDirectory(CopyPathInput.Text);
+                System.IO.Directory.Move(sender.DirectoryPath, CopyPathInput.Text + "/" + sender.Name);
+            }
+            catch (Exception)
+            {
+                CopyPathInput.Text = CopyPathInput.Text + "<-- Not Valid Path -->";
+            }
+            UpdateAppsWithPrewPath();
+        }
         private void StartApk(PrgData sender)
         {
             Process.Start(sender.Path);
+        }
+        private void DeleteApk(PrgData sender)
+        {
+            if (System.IO.Directory.Exists(sender.DirectoryPath))
+            {
+                try
+                {
+                    System.IO.Directory.Delete(sender.DirectoryPath, true);
+                }
+
+                catch (System.IO.IOException e)
+                {
+                    
+                }
+                UpdateAppsWithPrewPath();
+            }
         }
         private void ButtonActionDelete_Click(object sender, RoutedEventArgs e)
         {
@@ -141,6 +187,16 @@ namespace WpfApp7
             }
         }
 
+        private void ButtonNo_Click(object sender, RoutedEventArgs e)
+        {
+            PopUp.Visibility = Visibility.Hidden;
+        }
 
+        private void ButtonYes_Click(object sender, RoutedEventArgs e)
+        {
+           
+            DeleteApk((PrgData)AppList[LastApkClickedToDelete]);
+            PopUp.Visibility = Visibility.Hidden;
+        }
     }
 }

@@ -20,5 +20,21 @@
         <StackPanel Name="sp" Height="200" Width="500">
 
         </StackPanel>
+        <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  Name="PopUp" Visibility="Hidden">
+            <Rectangle Fill="AliceBlue" Opacity="0.8"></Rectangle>
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+
+                <StackPanel Background="Red" >
+                    <Label>Opravdu chcete tento soubor smazat?</Label>
+                    <StackPanel Orientation="Horizontal" Height="60" VerticalAlignment="Bottom" HorizontalAlignment="Center" >
+                        <Button Height="50" Width="100" Margin="5 0 5 10" Click="ButtonYes_Click" Content="Ano" Background="AliceBlue"></Button>
+                        <Button Height="50" Width="100" Margin="5 0 5 10" Click="ButtonNo_Click" Content="Ne" Background="AliceBlue"></Button>
+                    </StackPanel>
+                </StackPanel>
+
+            </Grid>
+        </Grid>
+        
+        
     </Grid>
 </Window>
