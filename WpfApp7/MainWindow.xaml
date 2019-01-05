@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp7"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        MinHeight="450"
+        MinWidth="800"
+        Title="Visual Studio Projekt Lancher" Height="450" Width="800">
+        
     <Grid>
+        <TextBlock VerticalAlignment="Bottom" Height="50" TextAlignment="Left" Name="ErrMsg"></TextBlock>
         <StackPanel Orientation="Horizontal" Height="50" VerticalAlignment="Top" HorizontalAlignment="Center" >
             <Button Height="50" Width="100" Margin="5 0 5 0" Name="ActionB1" Content="Smazat" Click="ButtonActionDelete_Click" Background="AliceBlue"></Button>
             <Button Height="50" Width="100" Margin="5 0 5 0" Name="ActionB2" Content="Spustit" Click="ButtonActionPlay_Click" Background="AliceBlue"></Button>
@@ -14,12 +18,19 @@
         </StackPanel>
         
         
-        <TextBox Height="20" Margin="20 60 40 0" VerticalAlignment="Top" Name="PathInput" Text="C:\Users\W0olf\source\" ></TextBox>
-        <Button Height="20" Width="20" Margin="20 60 20 0" VerticalAlignment="Top" HorizontalAlignment="Right" Click="ButtonUpdate_Click" Content="S" ></Button>
+        <TextBox Height="20" Margin="20 60 40 0" VerticalAlignment="Top" Name="PathInput" Text="C:\Users\W0olf\source\" TextChanged="PathInput_TextChanged" ></TextBox>
+        <Button Height="20" Width="20" Margin="20 60 20 0" VerticalAlignment="Top" Name="SButton" HorizontalAlignment="Right" Click="ButtonUpdate_Click" Content="S" ></Button>
         <TextBox Height="20" Margin="20 85 20 0" VerticalAlignment="Top" Name="CopyPathInput" Text="C:\Users\W0olf\source\Copy_Destination"></TextBox>
-        <StackPanel Name="sp" Height="200" Width="500">
-
-        </StackPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Name="scroll" Height="200" Margin="0 0 20 0" >
+            <StackPanel Name="sp"  Margin="20 0 0 0">
+                <TextBlock>- Pro vyhledání projektů využíjte první input okno</TextBlock>
+                <TextBlock>- Pro Zadání cílové destinace projektů využíjte druhé input okno</TextBlock>
+                <TextBlock>- Pro vybrání akce stiskněte jedno z tlačítek v horní části okna</TextBlock>
+                <TextBlock>- Při mazání dat se může stát že nebude smazaná celá složka. toto se stává kvůli nedostatečným oprávněním.</TextBlock>
+                <TextBlock>- Dóle se ukazují upozornění</TextBlock>
+            </StackPanel>
+        </ScrollViewer>
+        
         <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  Name="PopUp" Visibility="Hidden">
             <Rectangle Fill="AliceBlue" Opacity="0.8"></Rectangle>
             <Grid VerticalAlignment="Center" HorizontalAlignment="Center">

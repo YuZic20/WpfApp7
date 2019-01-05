@@ -40,7 +40,9 @@ namespace WpfApp7
         {
             InitializeComponent();
             ChangeButtonColor(action);
-            
+            SButton.Content = "\uD83D\uDD0D";
+
+
         }
         private void ButtonUpdate_Click(object sender, RoutedEventArgs e)
         {
@@ -49,16 +51,17 @@ namespace WpfApp7
 
         private void UpdateApps()
         {
+            SPath = PathInput.Text;
             try
             {
                 AppList = new List<PrgData>();
-                string SPath = PathInput.Text;
+                
                 AppList = LoadList.GetExe(SPath);
                 PrintApps();
             }
             catch(Exception)
             {
-                PathInput.Text = PathInput.Text + " <-- Not Valid Path -->";
+                ErrMsg.Text = "nevalidní cesta pro vyhledání";
             }
             
         }
@@ -76,7 +79,7 @@ namespace WpfApp7
             {
                 Button newBtn = new Button();
 
-                newBtn.Content = AppList[i].Name;
+                newBtn.Content = AppList[i].Name + "   |  Path: " + AppList[i].DirectoryPath;
                 newBtn.Name = AppList[i].Name;
                 newBtn.Height = 20;
                 newBtn.Click += new RoutedEventHandler(Apk_Click);
@@ -85,14 +88,16 @@ namespace WpfApp7
 
 
                 sp.Children.Add(newBtn);
-                int a = 5;
-            }
 
+            }
+           
+            scroll.UpdateLayout();
         }
 
 
         private void Apk_Click(object sender, RoutedEventArgs e)
         {
+            ErrMsg.Text = "";
             Button bt = (Button)sender;
 
             int Id = Int32.Parse(bt.Tag.ToString());
@@ -122,7 +127,7 @@ namespace WpfApp7
             }
             catch (Exception)
             {
-                CopyPathInput.Text = CopyPathInput.Text + "<-- Not Valid Path -->";
+                ErrMsg.Text = "nevalidní cesta pro destinaci projektu";
             }
             UpdateAppsWithPrewPath();
         }
@@ -136,12 +141,13 @@ namespace WpfApp7
             {
                 try
                 {
-                    System.IO.Directory.Delete(sender.DirectoryPath, true);
+                    string ParentPath = System.IO.Directory.GetParent(sender.DirectoryPath).ToString();
+                    System.IO.Directory.Delete(ParentPath , true);
                 }
 
-                catch (System.IO.IOException e)
+                catch (Exception e)
                 {
-                    
+                    ErrMsg.Text = "Složku se nepodařilo celu smazat. důvod: " + e.Message;
                 }
                 UpdateAppsWithPrewPath();
             }
@@ -197,6 +203,11 @@ namespace WpfApp7
            
             DeleteApk((PrgData)AppList[LastApkClickedToDelete]);
             PopUp.Visibility = Visibility.Hidden;
+        }
+
+        private void PathInput_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

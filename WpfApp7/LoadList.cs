@@ -155,6 +155,7 @@ namespace WpfApp7
                 }
                 catch
                 {
+                    
                     // error na souboru
                 }
                 
